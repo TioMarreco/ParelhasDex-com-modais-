@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f0f0f0;
+  }
+  
+  header {
+    background-color: #3f51b5;
+    color: white;
+    padding: 15px 30px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  main {
+    text-align: center;
+    padding: 60px 20px;
+  }
+  
+  h2 {
+    font-size: 28px;
+    color: #3f51b5;
+  }
+  
+  .botoes {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .botao {
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 18px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .cidadao {
+    background-color: #4caf50;
+  }
+  
+  .cidadao:hover {
+    background-color: #388e3c;
+  }
+  
+  .professor {
+    background-color: #f44336;
+  }
+  
+  .professor:hover {
+    background-color: #c62828;
+  }
+  

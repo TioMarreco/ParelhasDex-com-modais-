@@ -1,0 +1,99 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #fff8f0;
+  }
+  
+  header {
+    background-color: #c62828;
+    color: white;
+    padding: 15px 30px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  main {
+    max-width: 1000px;
+    margin: auto;
+    padding: 30px 20px;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #b71c1c;
+    margin-bottom: 30px;
+  }
+  
+  .filtros,
+  .cadastro {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .filtros input,
+  .filtros select,
+  .cadastro input,
+  .cadastro select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+    min-width: 180px;
+  }
+  
+  .cadastro button {
+    padding: 10px 20px;
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .cadastro button:hover {
+    background-color: #b71c1c;
+  }
+  
+  .lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .card {
+    background-color: #fff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 250px;
+  }
+  
+  .card p {
+    margin: 6px 0;
+    font-size: 16px;
+  }
+  
+  .card button {
+    margin-top: 8px;
+    margin-right: 5px;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #d84315;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .card button:hover {
+    background-color: #bf360c;
+  }
+  

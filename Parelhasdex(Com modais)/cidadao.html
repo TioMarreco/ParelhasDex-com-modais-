@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>ParelhasDex - Cidadão</title>
+  <link rel="stylesheet" href="cidadao.css" />
+</head>
+<body>
+  <header>
+    <h1>ParelhasDex</h1>
+  </header>
+
+  <main>
+    <h2>Consulta Pública</h2>
+
+    <section class="filtros">
+      <input type="text" id="buscaNome" placeholder="Buscar por nome..." />
+      <select id="filtroTipo">
+        <option value="">Todos os tipos</option>
+      </select>
+    </section>
+
+    <div id="resultado" class="lista"></div>
+  </main>
+
+  <script>
+    const tiposPokemon = [
+      "normal", "fogo", "água", "planta", "elétrico", "gelo", "lutador", "venenoso",
+      "terrestre", "voador", "psíquico", "inseto", "pedra", "fantasma", "dragão",
+      "sombrio", "metálico", "fada"
+    ];
+
+    const pokemons = [
+      { numero: 1, nome: "Pedrassauro", tipo1: "pedra", tipo2: "fogo" },
+      { numero: 2, nome: "Seridómon", tipo1: "água", tipo2: "" }
+    ];
+
+    const buscaNome = document.getElementById("buscaNome");
+    const filtroTipo = document.getElementById("filtroTipo");
+    const resultado = document.getElementById("resultado");
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function preencherTipos() {
+      tiposPokemon.forEach(tipo => {
+        const opt = document.createElement("option");
+        opt.value = tipo;
+        opt.textContent = capitalize(tipo);
+        filtroTipo.appendChild(opt);
+      });
+    }
+
+    function exibirPokemons() {
+      const nomeFiltro = buscaNome.value.toLowerCase();
+      const tipoFiltro = filtroTipo.value;
+
+      const encontrados = pokemons
+        .filter(p =>
+          p.nome.toLowerCase().includes(nomeFiltro) &&
+          (tipoFiltro === "" || p.tipo1 === tipoFiltro || p.tipo2 === tipoFiltro)
+        )
+        .sort((a, b) => a.numero - b.numero);
+
+      resultado.innerHTML = "";
+
+      if (encontrados.length === 0) {
+        resultado.innerHTML = "<p>Nenhum pokémon encontrado.</p>";
+        return;
+      }
+
+      encontrados.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <p><strong>Nº:</strong> ${p.numero}</p>
+          <p><strong>Nome:</strong> ${p.nome}</p>
+          <p><strong>Tipo 1:</strong> ${capitalize(p.tipo1)}</p>
+          <p><strong>Tipo 2:</strong> ${p.tipo2 ? capitalize(p.tipo2) : "Não tem"}</p>
+        `;
+        resultado.appendChild(div);
+      });
+    }
+
+    buscaNome.addEventListener("input", exibirPokemons);
+    filtroTipo.addEventListener("change", exibirPokemons);
+
+    preencherTipos();
+    exibirPokemons();
+  </script>
+</body>
+</html>
