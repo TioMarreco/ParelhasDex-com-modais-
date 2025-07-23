@@ -1,0 +1,1 @@
+Problemas ajeitados,Resumo, eu n consegui entender oque tava errado num Filter, nem o Chat GPT conseguiu me ajudar ent eu peguei a versão sem modais e mais simples de uma das partes do programa e botei devolta, pq ela funciona
