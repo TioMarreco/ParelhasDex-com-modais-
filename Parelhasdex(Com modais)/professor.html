@@ -4,112 +4,51 @@
   <meta charset="UTF-8" />
   <title>ParelhasDex - Professor</title>
   <link rel="stylesheet" href="professor.css" />
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
   <header>
     <h1>ParelhasDex</h1>
   </header>
 
-  <main class="container py-4">
+  <main>
     <h2>Painel do Professor</h2>
 
-    <section class="filtros mb-4">
-      <input type="text" id="buscaNome" placeholder="Buscar por nome..." class="form-control mb-2"/>
-      <select id="filtroTipo" class="form-select"></select>
+    <section class="filtros">
+      <input type="text" id="buscaNome" placeholder="Buscar por nome..." />
+      <select id="filtroTipo">
+        <option value="">Todos os tipos</option>
+      </select>
     </section>
 
-    <section class="cadastro mb-4">
+    <section class="cadastro">
       <h3>Cadastro de Pokémon</h3>
-      <input type="number" id="numero" placeholder="Número" class="form-control mb-2"/>
-      <input type="text" id="nome" placeholder="Nome do Pokémon" class="form-control mb-2"/>
-      <select id="tipo1" class="form-select mb-2"></select>
-      <select id="tipo2" class="form-select mb-2"></select>
-      <button onclick="adicionarPokemon()" class="btn btn-primary">Cadastrar</button>
+      <input type="number" id="numero" placeholder="Número" />
+      <input type="text" id="nome" placeholder="Nome do Pokémon" />
+      <select id="tipo1"></select>
+      <select id="tipo2"></select>
+      <button onclick="adicionarPokemon()">Cadastrar</button>
     </section>
 
     <div id="resultado" class="lista"></div>
   </main>
 
-  <!-- Modais -->
-  <!-- 1. Erro/Formulário incompleto -->
-  <div class="modal fade" id="modalErroGeral" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Atenção</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body" id="mensagemErroGeral"></div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">OK</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. Modal editar -->
-  <div class="modal fade" id="modalEditar" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Editar Pokémon</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <input type="number" id="editNumero" class="form-control mb-2" placeholder="Número">
-          <input type="text" id="editNome" class="form-control mb-2" placeholder="Nome">
-          <input type="text" id="editTipo1" class="form-control mb-2" placeholder="Tipo 1">
-          <input type="text" id="editTipo2" class="form-control mb-2" placeholder="Tipo 2 (ou vazio)">
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button class="btn btn-primary" onclick="confirmarEdicao()">Salvar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 3. Confirmar exclusão -->
-  <div class="modal fade" id="modalConfirmExcluir" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Confirmação</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">Deseja remover esse Pokémon?</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
-          <button class="btn btn-danger" onclick="confirmarRemover()">Sim</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    const erroModal = new bootstrap.Modal(document.getElementById('modalErroGeral'));
-    const editarModal = new bootstrap.Modal(document.getElementById('modalEditar'));
-    const confirmModal = new bootstrap.Modal(document.getElementById('modalConfirmExcluir'));
+    const tiposPokemon = [
+      "normal", "fogo", "água", "planta", "elétrico", "gelo", "lutador", "venenoso",
+      "terrestre", "voador", "psíquico", "inseto", "pedra", "fantasma", "dragão",
+      "sombrio", "metálico", "fada"
+    ];
 
-    let editarIndex = null;
-    let removerIndex = null;
-
-    const tiposPokemon = ["normal","fogo","água","planta","elétrico","gelo","lutador","venenoso","terrestre","voador","psíquico","inseto","pedra","fantasma","dragão","sombrio","metálico","fada"];
     let pokemons = [
       { numero: 1, nome: "Pedrassauro", tipo1: "pedra", tipo2: "fogo" },
       { numero: 2, nome: "Seridómon", tipo1: "água", tipo2: "" }
     ];
 
-    // elementos
-    const buscaNome = document.getElementById("buscaNome"),
-          filtroTipo = document.getElementById("filtroTipo"),
-          resultado = document.getElementById("resultado"),
-          tipo1Select = document.getElementById("tipo1"),
-          tipo2Select = document.getElementById("tipo2");
+    const buscaNome = document.getElementById("buscaNome");
+    const filtroTipo = document.getElementById("filtroTipo");
+    const resultado = document.getElementById("resultado");
+    const tipo1Select = document.getElementById("tipo1");
+    const tipo2Select = document.getElementById("tipo2");
 
     function capitalize(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
@@ -117,9 +56,15 @@
 
     function preencherTipos() {
       tiposPokemon.forEach(tipo => {
-        const opt = new Option(capitalize(tipo), tipo);
-        tipo1Select.add(opt);
-        filtroTipo.add(new Option(capitalize(tipo), tipo));
+        const opt1 = document.createElement("option");
+        opt1.value = tipo;
+        opt1.textContent = capitalize(tipo);
+        tipo1Select.appendChild(opt1);
+
+        const optFiltro = document.createElement("option");
+        optFiltro.value = tipo;
+        optFiltro.textContent = capitalize(tipo);
+        filtroTipo.appendChild(optFiltro);
       });
       atualizarTipo2();
     }
@@ -127,52 +72,71 @@
     tipo1Select.addEventListener("change", atualizarTipo2);
 
     function atualizarTipo2() {
+      const tipo1 = tipo1Select.value;
       tipo2Select.innerHTML = "";
-      tipo2Select.add(new Option("Não tem", ""));
+      const opNone = document.createElement("option");
+      opNone.value = "";
+      opNone.textContent = "Não tem";
+      tipo2Select.appendChild(opNone);
+
       tiposPokemon.forEach(tipo => {
-        if (tipo !== tipo1Select.value) {
-          tipo2Select.add(new Option(capitalize(tipo), tipo));
+        if (tipo !== tipo1) {
+          const opt = document.createElement("option");
+          opt.value = tipo;
+          opt.textContent = capitalize(tipo);
+          tipo2Select.appendChild(opt);
         }
       });
     }
 
     function exibirPokemons() {
-    const nomeFiltro = buscaNome.value.toLowerCase();
-    const tipoFiltro = filtroTipo.value;
+      const nomeFiltro = buscaNome.value.toLowerCase();
+      const tipoFiltro = filtroTipo.value;
 
-    const encontrados = pokemons.filter(p =>
-        p.nome.toLowerCase().includes(nomeFiltro) &&
-        (tipoFiltro === "" || p.tipo1 === tipoFiltro || p.tipo2 === tipoFiltro)
-    ).sort((a,b)=>a.numero-b.numero);
-        console.log(pokemons, encontrados)
-    resultado.innerHTML = encontrados.length
-        ? encontrados.map(p => {
-            const i = pokemons.findIndex(item => item.numero === p.numero);
-            return `
-            <div class="card p-3 mb-2">
-             <p><strong>Nº:</strong> ${p.numero}</p>
-                <p><strong>Nome:</strong> ${p.nome}</p>
-                <p><strong>Tipo 1:</strong> ${capitalize(p.tipo1)}</p>
-                <p><strong>Tipo 2:</strong> ${p.tipo2?capitalize(p.tipo2):'Não tem'}</p>
-                <button class="btn btn-sm btn-warning me-2" onclick="editarPokemon(${i})">Editar</button>
-                <button class="btn btn-sm btn-danger" onclick="removerPokemon(${i})">Remover</button>
-            </div>`;
-        }).join('')
-        : "<p>Nenhum pokémon encontrado.</p>";
+      const encontrados = pokemons
+        .filter(p =>
+          p.nome.toLowerCase().includes(nomeFiltro) &&
+          (tipoFiltro === "" || p.tipo1 === tipoFiltro || p.tipo2 === tipoFiltro)
+        )
+        .sort((a, b) => a.numero - b.numero);
+
+      resultado.innerHTML = "";
+
+      if (encontrados.length === 0) {
+        resultado.innerHTML = "<p>Nenhum pokémon encontrado.</p>";
+        return;
+      }
+
+      encontrados.forEach((p, i) => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <p><strong>Nº:</strong> ${p.numero}</p>
+          <p><strong>Nome:</strong> ${p.nome}</p>
+          <p><strong>Tipo 1:</strong> ${capitalize(p.tipo1)}</p>
+          <p><strong>Tipo 2:</strong> ${p.tipo2 ? capitalize(p.tipo2) : "Não tem"}</p>
+          <button onclick="editarPokemon(${i})">Editar</button>
+          <button onclick="removerPokemon(${i})">Remover</button>
+        `;
+        resultado.appendChild(div);
+      });
     }
 
-
     function adicionarPokemon() {
-      const numero = +document.getElementById("numero").value;
+      const numero = parseInt(document.getElementById("numero").value);
       const nome = document.getElementById("nome").value.trim();
       const tipo1 = tipo1Select.value;
       const tipo2 = tipo2Select.value;
 
       if (!numero || !nome || !tipo1) {
-        return exibirErro("Preencha todos os campos obrigatórios.");
+        alert("Preencha todos os campos obrigatórios.");
+        return;
       }
-      if (pokemons.some(p=>p.numero===numero)) {
-        return exibirErro("Já existe um Pokémon com esse número. Edite em vez de cadastrar.");
+
+      const existente = pokemons.find(p => p.numero === numero);
+      if (existente) {
+        alert("Já existe um Pokémon com esse número. Edite em vez de cadastrar.");
+        return;
       }
 
       pokemons.push({ numero, nome, tipo1, tipo2 });
@@ -180,47 +144,34 @@
       exibirPokemons();
     }
 
-    function exibirErro(msg) {
-      document.getElementById("mensagemErroGeral").textContent = msg;
-      erroModal.show();
-    }
-
-    function editarPokemon(i) {
-      editarIndex = i;
-      const p = pokemons[i];
-      document.getElementById("editNumero").value = p.numero;
-      document.getElementById("editNome").value = p.nome;
-      document.getElementById("editTipo1").value = p.tipo1;
-      document.getElementById("editTipo2").value = p.tipo2;
-      editarModal.show();
-    }
-
-    function confirmarEdicao() {
-      const novoNumero = +document.getElementById("editNumero").value;
-      const novoNome = document.getElementById("editNome").value.trim();
-      const novoTipo1 = document.getElementById("editTipo1").value.trim();
-      const novoTipo2 = document.getElementById("editTipo2").value.trim();
+    function editarPokemon(index) {
+      const p = pokemons[index];
+      const novoNumero = parseInt(prompt("Novo número:", p.numero));
+      const novoNome = prompt("Novo nome:", p.nome);
+      const novoTipo1 = prompt("Novo tipo 1:", p.tipo1);
+      const novoTipo2 = prompt("Novo tipo 2 (ou vazio):", p.tipo2);
 
       if (!novoNumero || !novoNome || !novoTipo1) {
-        editarModal.hide();
-        return exibirErro("Dados inválidos.");
+        alert("Dados inválidos.");
+        return;
       }
 
-      pokemons[editarIndex] = { numero: novoNumero, nome: novoNome, tipo1: novoTipo1, tipo2: novoTipo2 };
-      pokemons.sort((a,b)=>a.numero - b.numero);
-      editarModal.hide();
+      pokemons[index] = {
+        numero: novoNumero,
+        nome: novoNome,
+        tipo1: novoTipo1,
+        tipo2: novoTipo2,
+      };
+
+      pokemons.sort((a, b) => a.numero - b.numero);
       exibirPokemons();
     }
 
-    function removerPokemon(i) {
-      removerIndex = i;
-      confirmModal.show();
-    }
-
-    function confirmarRemover() {
-      pokemons.splice(removerIndex, 1);
-      confirmModal.hide();
-      exibirPokemons();
+    function removerPokemon(index) {
+      if (confirm("Deseja remover esse Pokémon?")) {
+        pokemons.splice(index, 1);
+        exibirPokemons();
+      }
     }
 
     function limparFormulario() {
@@ -238,3 +189,4 @@
   </script>
 </body>
 </html>
+
